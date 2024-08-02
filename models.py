@@ -12,6 +12,7 @@ class Event:
     price: float
     links: Dict[str, str]
     source_id: str
+    location: Optional[str]
     _id: Optional[str] = field(default=None)
 
     def __post_init__(self):

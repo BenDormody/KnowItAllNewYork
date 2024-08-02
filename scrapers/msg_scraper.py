@@ -146,8 +146,10 @@ class MSGScraper(BaseScraper):
         long_description = long_description_elem.get_text(
             strip=True) if long_description_elem else "Full details not available"
 
+        tags = []
         tags_elem = soup.select_one("p.eyebrow")
-        tags = tags_elem.text.strip() if tags_elem else "Tags not available"
+        tag = tags_elem.text.strip() if tags_elem else "Tags not available"
+        tags.append(tag)
 
         return {
             "performer": performer,

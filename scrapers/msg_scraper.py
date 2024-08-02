@@ -18,8 +18,8 @@ class MSGScraper(BaseScraper):
         super().__init__(source, db_handler)  # Call the base class initializer
         # Initialize the Chrome WebDriver
         # Specify the path to your ChromeDriver
-        self.driver = webdriver.Firefox()
-        self.wait = WebDriverWait(self.driver, 10)
+        self.driver = webdriver.Chrome()
+        self.wait = WebDriverWait(self.driver, 5)
 
     def scrape_events(self):
         url = self.source.link
@@ -36,11 +36,8 @@ class MSGScraper(BaseScraper):
             self.driver.quit()
             return []
 
-        # Optional: Give some extra time to ensure all content is loaded
-        time.sleep(5)
-
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
-        events = []
+        events_and_details = []
 
         for event_elem in soup.select("[class*='EventCard_card__']"):
             # Extract the name of the event
@@ -77,45 +74,102 @@ class MSGScraper(BaseScraper):
                 price = 0.0  # Default price if not found
 
             # Extract the link to buy tickets
-            link = event_elem.find('a', class_='Button_button__Bw_LG')['href']
+            ticket_link = event_elem.find(
+                'a', class_='Button_primary__IKq4E')['href']
+            # Extract the link to view event details
+            details_link = event_elem.find(
+                'a', class_='Button_secondary__Al6Z7')['href']
 
+            # Scrape event details from the details link
+            event_details_for_event, event_details = self.scrape_event_details(
+                details_link)
+            print(event_details_for_event)
             event = Event(
                 name=name,
-                tags=["MSG", "Concert"],  # Example tags
-                # Example start time
-                date={"day": date.date().isoformat(),
-                      "start_time": start_time},
-                performer=performer,
+                tags=event_details_for_event.get("tags"),
+                date={"day": date.date().isoformat(), "start_time": start_time},
+                performer=event_details_for_event.get("performer"),
                 price=price,
-                links={"ticket": link},
+                location=event_details_for_event.get("location"),
+                links={"ticket": ticket_link, "details": details_link},
                 source_id=str(self.source._id)
             )
-            if not self.is_duplicate(event, events):
-                events.append(event)
+            if not self.is_duplicate(event, [e for e, _ in events_and_details]):
+                events_and_details.append((event, event_details))
 
         self.driver.quit()
-        return events
+        return events_and_details
 
-    def scrape_event_details(self, event: Event):
-        # In a real scenario, you might need to visit the event's specific page
-        # Here, we're creating example details
-        return Detail(
+    def scrape_event_details(self, link):
+        self.driver.get(link)
+        try:
+            self.wait.until(EC.presence_of_element_located(
+                (By.CSS_SELECTOR, ".T55Ty")))
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            print("Page source at error:")
+            print(self.driver.page_source)
+            return {}, Detail(
+                age_limit=None,
+                league=None,
+                teams=None,
+                drink_minimum=None,
+                genre=None,
+                tournament_name=None,
+                details={"short": "Details not available",
+                         "long": "Unable to retrieve details for this event."},
+                sport=None,
+                event_id=""
+            )
+
+        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+
+        performer_elem = soup.select_one("h1._1bZlN")
+        performer = performer_elem.text.strip() if performer_elem else None
+
+        event_name_elem = soup.select_one("p._1hMLF")
+        event_name = event_name_elem.text.strip() if event_name_elem else None
+
+        location_elem = soup.select_one("p._19NH9")
+        location = location_elem.text.strip() if location_elem else "Location not available"
+
+        overview_elem = soup.select_one("p.eyebrow")
+        if overview_elem:
+            short_description_elem = overview_elem.find_next_sibling(
+                "div", class_="x17BN")
+            short_description = short_description_elem.get_text(
+                strip=True) if short_description_elem else "Overview not available"
+        else:
+            short_description = "Overview not available"
+
+        long_description_elem = soup.select_one("div.x17BN")
+        long_description = long_description_elem.get_text(
+            strip=True) if long_description_elem else "Full details not available"
+
+        tags_elem = soup.select_one("p.eyebrow")
+        tags = tags_elem.text.strip() if tags_elem else "Tags not available"
+
+        return {
+            "performer": performer,
+            "event_name": event_name,
+            "location": location,
+            "tags": tags
+        }, Detail(
             age_limit=None,
             league=None,
             teams=None,
             drink_minimum=None,
             genre=None,
             tournament_name=None,
-            details={"short": f"{event.name} at MSG",
-                     "long": f"Enjoy {event.name} performed by {event.performer} at Madison Square Garden."},
+            details={
+                "short": short_description,
+                "long": long_description
+            },
             sport=None,
-            event_id=""  # This will be filled in the run method
+            event_id=""
         )
 
     def is_duplicate(self, new_event, existing_events):
-        """
-        Check if the new_event already exists in the existing_events list.
-        """
         for event in existing_events:
             if (event.name == new_event.name and
                 event.date['day'] == new_event.date['day'] and

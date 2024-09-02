@@ -6,32 +6,32 @@
 <h1 class="text-center">Events</h1>
 <div class="fullscreen-layout">
   <div class="left-side">
+    <div id="event-details">
+      <!-- Event details will be displayed here -->
+    </div>
+  </div>
+  <div class="right-side">
     <div class="section">
       <div class="table-container">
-        <table class="table table-hover" id="sortableTable">
+        <table class="table table-hover">
           <thead>
             <tr>
-              <th id="titleHeader">Title</th>
-              <th id="descriptionHeader">Description</th>
-              <th id="dateHeader">Date/Time</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Date/Time</th>
             </tr>
           </thead>
           <tbody>
             {% for event in events %}
-            <tr data-event-id="{{ event._id }}">
-              <td>{{ event.title }}</td>
-              <td>{{ event.description }}</td>
-              <td>{{ event.date }}</td>
+            <tr>
+              <td>{{ event.performer }}</td>
+              <td>{{ event.location }}</td>
+              <td>{{ event.date.day }}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
-  <div class="right-side">
-    <div id="event-details">
-      <!-- Event details will be displayed here -->
     </div>
   </div>
 </div>

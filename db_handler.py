@@ -31,7 +31,11 @@ class DBHandler:
     def get_events_by_tag(self, tag):
         """Get all events with a specific tag that are not in the past."""
         current_date = datetime.now(tz=self.tz)
-        return list(self.events.find({"tag": tag, "date": {"$gte": current_date}}).sort("date"))
+        return list(self.events.find({"tag": tag, "date.day": {"$gte": current_date}}).sort("date.day"))
+    
+    def get_all_events(self):
+        current_date = datetime.now(tz=self.tz)
+        return list(self.events.find({"date.day": {"$gte": current_date}}).sort("date.day"))
 
     def get_event_details(self, event_id):
         """Get details for a specific event."""

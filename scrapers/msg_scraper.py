@@ -74,8 +74,14 @@ class MSGScraper(BaseScraper):
                 price = 0.0  # Default price if not found
 
             # Extract the link to buy tickets
-            ticket_link = event_elem.find(
-                'a', class_='Button_primary__IKq4E')['href']
+            ticket_tag = event_elem.find(
+                'a', class_='Button_primary__IKq4E')
+            if ticket_tag is not None:
+                ticket_link = ticket_tag['href']
+            elif event_elem.find('a', class_='Button_onsale__decsL') is not None:
+                ticket_link = event_elem.find('a', class_='Button_onsale__decsL')['href']
+            else:
+                ticket_link = None
             # Extract the link to view event details
             details_link = event_elem.find(
                 'a', class_='Button_secondary__Al6Z7')['href']

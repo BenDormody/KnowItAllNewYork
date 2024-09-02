@@ -30,37 +30,3 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 });
-
-function sortTable(columnIndex) {
-  var table = document.getElementById("sortableTable");
-  var rows = Array.prototype.slice.call(table.querySelectorAll("tbody > tr"));
-
-  rows.sort(function (rowA, rowB) {
-    var cellA = rowA.cells[columnIndex].textContent;
-    var cellB = rowB.cells[columnIndex].textContent;
-
-    if (!isNaN(cellA) && !isNaN(cellB)) {
-      return cellA - cellB;
-    }
-
-    return cellA.localeCompare(cellB);
-  });
-
-  rows.forEach(function (row) {
-    table.querySelector("tbody").appendChild(row);
-  });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("titleHeader").addEventListener("click", function () {
-    sortTable(0);
-  });
-  document
-    .getElementById("descriptionHeader")
-    .addEventListener("click", function () {
-      sortTable(1);
-    });
-  document.getElementById("dateHeader").addEventListener("click", function () {
-    sortTable(2);
-  });
-});

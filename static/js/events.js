@@ -30,3 +30,38 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tableContainer = document.querySelector(".table-container");
+  const stickyHeader = document.getElementById("sticky-header");
+  const dateHeaders = document.querySelectorAll(".date-header");
+
+  function updateStickyHeader() {
+    let currentDate = null;
+    const containerRect = tableContainer.getBoundingClientRect();
+    const containerTop = containerRect.top;
+
+    for (let header of dateHeaders) {
+      const headerRect = header.getBoundingClientRect();
+      if (headerRect.top <= containerTop) {
+        currentDate = header.dataset.date;
+      } else {
+        break;
+      }
+    }
+
+    if (currentDate) {
+      stickyHeader.textContent = currentDate;
+      stickyHeader.style.display = "block";
+    } else {
+      stickyHeader.style.display = "none";
+    }
+  }
+
+  tableContainer.addEventListener("scroll", updateStickyHeader);
+  window.addEventListener("scroll", updateStickyHeader);
+  window.addEventListener("resize", updateStickyHeader);
+
+  // Initial call to set correct state on page load
+  updateStickyHeader();
+});

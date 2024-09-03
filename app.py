@@ -25,10 +25,9 @@ def index():
 def events(variable):
     if variable == "all_events":
         events = db_handler.get_all_events()
-        print(events)
     else:
         events = db_handler.get_events_by_tag(variable)
-    return render_template("events.html", events=events)
+    return render_template("events.html", events=events, event_type = variable)
 
 
 @app.route('/api/event/<event_id>')

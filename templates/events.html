@@ -11,7 +11,11 @@
   <div class="right-side">
     <div class="top-bar">
       <div class="category-card">
+        {% if event_type == "all_events" %}
+        <h3>All Events</h3>
+        {% else %}
         <h3>{{event_type}}</h3>
+        {% endif %}
       </div>
       <div class="white-space"></div>
       <div class="date-card">
@@ -24,9 +28,7 @@
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Date/Time</th>
+              <br />
             </tr>
           </thead>
           <tbody>
@@ -41,8 +43,24 @@
             {% endif %}
             <tr>
               <td>{{ event.performer }}</td>
-              <td>{{ event.location }}</td>
-              <td>{{ event.date.start_time.strftime('%I:%M %p') }}</td>
+              <td>
+                {{ event.location }}
+                <br />
+                <button>
+                  <a href="{{event.links.details}}" target="_blank">
+                    More Details
+                  </a>
+                </button>
+              </td>
+              <td>
+                {{ event.date.start_time.strftime('%I:%M %p') }}
+                <br />
+                <button>
+                  <a href="{{event.links.ticket}}" target="_blank"
+                    >Buy tickets</a
+                  >
+                </button>
+              </td>
             </tr>
             {% endfor %}
           </tbody>

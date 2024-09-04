@@ -34,7 +34,6 @@ class Event:
 @dataclass
 class Source:
     venue: str
-    address: str
     link: str
     _id: Optional[str] = field(default=None)
 

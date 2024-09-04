@@ -36,11 +36,15 @@ class Source:
     venue: str
     link: str
     _id: Optional[str] = field(default=None)
+    last_scraped: Optional[datetime.datetime] = field(
+        default=None)  # New field added
 
     def to_dict(self):
         source_dict = asdict(self)
         if source_dict['_id'] is None:
             del source_dict['_id']
+        if source_dict['last_scraped'] is None:
+            del source_dict['last_scraped']
         return source_dict
 
 

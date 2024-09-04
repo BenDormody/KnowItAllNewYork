@@ -14,6 +14,8 @@ class BaseScraper(ABC):
 
     def run(self):
         events_and_details = self.scrape_events()
+        if events_and_details:
+            self.db_handler.update_source(self.source._id, {})
         for event, details in events_and_details:
             if not self.db_handler.is_event_in_database(event):
                 # Insert the event and get its ID

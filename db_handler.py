@@ -20,6 +20,12 @@ class DBHandler:
         """Insert a new source into the database."""
         return self.sources.insert_one(source_data).inserted_id
 
+    def update_source(self, source_id, updated_data):
+        """Update an existing source."""
+        updated_data['last_scraped'] = datetime.now(
+            tz=self.tz)  # Automatically set last_scraped to current datetime
+        return self.sources.update_one({"_id": ObjectId(source_id)}, {"$set": updated_data})
+
     def insert_event(self, event_data):
         """Insert a new event into the database."""
         return self.events.insert_one(event_data).inserted_id
@@ -32,7 +38,7 @@ class DBHandler:
         """Get all events with a specific tag that are not in the past."""
         current_date = datetime.now(tz=self.tz)
         return list(self.events.find({"tag": tag, "date.day": {"$gte": current_date}}).sort("date.day"))
-    
+
     def get_all_events(self):
         current_date = datetime.now(tz=self.tz)
         return list(self.events.find({"date.day": {"$gte": current_date}}).sort("date.day"))
@@ -60,6 +66,14 @@ class DBHandler:
         """Delete an event and its associated details."""
         self.details.delete_one({"parent_event": event_id})
         return self.events.delete_one({"_id": ObjectId(event_id)})
+
+    def delete_past_events(self):
+        """Delete all events from prior to today"""
+        current_date = datetime.now(tz=self.tz)
+        past_events = list(self.events.find(
+            {"date.day": {"$lt": current_date}}))
+        for event in past_events:
+            self.delete_event(event['_id'])
 
     def get_all_sources(self):
         return [Source(**source) for source in self.sources.find()]

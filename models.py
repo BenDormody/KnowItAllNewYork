@@ -35,6 +35,7 @@ class Event:
 class Source:
     venue: str
     link: str
+    scraper: Optional[str]
     _id: Optional[str] = field(default=None)
     last_scraped: Optional[datetime.datetime] = field(
         default=None)  # New field added

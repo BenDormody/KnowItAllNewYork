@@ -67,3 +67,16 @@ class Detail:
         if desc_dict['_id'] is None:
             del desc_dict['_id']
         return desc_dict
+
+
+@dataclass
+class Category:
+    tag_name: str
+    sub_tags: List[str]
+    _id: Optional[str] = field(default=None)
+
+    def to_dict(self):
+        desc_dict = asdict(self)
+        if desc_dict['_id'] is None:
+            del desc_dict['_id']
+        return desc_dict

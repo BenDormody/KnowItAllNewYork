@@ -17,34 +17,40 @@
     {% block style %} {% endblock %}
   </head>
   <body>
-    <div class="navbar header">
-      <svg
-        width="80"
-        height="80"
-        viewBox="0 0 80 80"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <ellipse cx="40" cy="40" rx="40" ry="40" fill="#D9D9D9" />
-      </svg>
-      <h1 class="title"><a href="/">Know It All New Yorker</a></h1>
-    </div>
-    {% block content %}{% endblock %}
-    <nav class="navbar bottom-nav footer">
-      <div class="bottom-links">
-        <a href="#">Who are we?</a>
-        <a href="#">What we do?</a>
-        <a href="#">How we make money?</a>
+    <header class="navbar header">
+      <div class="container-fluid">
+        <svg
+          width="60"
+          height="60"
+          viewBox="0 0 80 80"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <ellipse cx="40" cy="40" rx="40" ry="40" fill="#D9D9D9" />
+        </svg>
+        <h1 class="title"><a href="/">Know It All New Yorker</a></h1>
       </div>
-      <div class="social-links">
-        <a>Find us on social media:</a>
-        <a href="#">instagram</a>
-        <a href="#">facebook</a>
-        <a href="#">youtube</a>
-        <a href="#">tiktok</a>
-        <a href="#">substack</a>
+    </header>
+
+    <main class="container my-4">{% block content %}{% endblock %}</main>
+
+    <footer class="navbar bottom-nav footer mt-auto">
+      <div class="container-fluid">
+        <div class="bottom-links">
+          <a href="#">Who are we?</a>
+          <a href="#">What we do?</a>
+          <a href="#">How we make money?</a>
+        </div>
+        <div class="social-links">
+          <span>Find us on social media:</span>
+          <a href="#">instagram</a>
+          <a href="#">facebook</a>
+          <a href="#">youtube</a>
+          <a href="#">tiktok</a>
+          <a href="#">substack</a>
+        </div>
       </div>
-    </nav>
+    </footer>
 
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"

@@ -1,33 +1,76 @@
-{% extends "base.html" %} {% block style%}<link rel="stylesheet" type="text/css" href="/static/styles/home.css" /> {% endblock %}{% block title %}Home{% endblock %} {% block content %}
-
-  </head>
-  <body>
-    <div class="row">
-      <div class="col-md-5">
-        <div class="section">
-          <h1 class="font-extra-large">Visiting?</h1>
-          <h1 class="font-extra-large">Live here?</h1>
-          <h1 class="font-extra-large">find out what's</h1>
-          <h1 class="font-extra-large">happening</h1>
-          <h1 class="font-extra-large">and when!</h1>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row row-cols-4 row-cols-md-2">
-          <a href="{{ url_for('events', variable='stage') }}"><div class="card font-large">on stage</div></a>
-            <a href="{{ url_for('events', variable='sport') }}"><div class="card font-large">sports</div></a>
-              <a href="{{ url_for('events', variable='music') }}"><div class="card font-large">music</div></a>
-                <a href="{{ url_for('events', variable='museums') }}"><div class="card font-large">museums</div></a>
-                  <a href="{{ url_for('events', variable='experiences') }}"><div class="card font-large">experiences</div></a>
-                    <a href="{{ url_for('events', variable='kids') }}"><div class="card font-large">kids</div></a>
-                      <a href="{{ url_for('events', variable='outdoor') }}"><div class="card font-medium">outdoor & active activites</div></a>
-                        <a href="{{ url_for('events', variable='decks') }}"><div class="card font-medium">observation decks & other icons</div></a>
-          </div>
-          <a href="{{ url_for('events', variable='all_events') }}"><div class="card font-small">see all the listings together</div></a>
-        </div>
+{% extends "base.html" %} {% block style %}
+<link rel="stylesheet" type="text/css" href="/static/styles/home.css" />
+{% endblock %} {% block title %}Home{% endblock %} {% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-5 mb-4">
+      <div class="section">
+        <h1 class="font-extra-large">Visiting?</h1>
+        <h1 class="font-extra-large">Live here?</h1>
+        <h1 class="font-extra-large">find out what's</h1>
+        <h1 class="font-extra-large">happening</h1>
+        <h1 class="font-extra-large">and when!</h1>
       </div>
     </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="col-lg-7">
+      <div class="row row-cols-2 g-3 event-grid">
+        <div class="col">
+          <a href="{{ url_for('events', variable='stage') }}" class="card-link"
+            ><div class="card font-large">on stage</div></a
+          >
+        </div>
+        <div class="col">
+          <a href="{{ url_for('events', variable='sport') }}" class="card-link"
+            ><div class="card font-large">sports</div></a
+          >
+        </div>
+        <div class="col">
+          <a href="{{ url_for('events', variable='music') }}" class="card-link"
+            ><div class="card font-large">music</div></a
+          >
+        </div>
+        <div class="col">
+          <a
+            href="{{ url_for('events', variable='museums') }}"
+            class="card-link"
+            ><div class="card font-large">museums</div></a
+          >
+        </div>
+        <div class="col">
+          <a
+            href="{{ url_for('events', variable='experiences') }}"
+            class="card-link"
+            ><div class="card font-large">experiences</div></a
+          >
+        </div>
+        <div class="col">
+          <a href="{{ url_for('events', variable='kids') }}" class="card-link"
+            ><div class="card font-large">kids</div></a
+          >
+        </div>
+        <div class="col">
+          <a
+            href="{{ url_for('events', variable='outdoor') }}"
+            class="card-link"
+            ><div class="card font-medium">outdoor & active activities</div></a
+          >
+        </div>
+        <div class="col">
+          <a href="{{ url_for('events', variable='decks') }}" class="card-link"
+            ><div class="card font-medium">
+              observation decks & other icons
+            </div></a
+          >
+        </div>
+      </div>
+      <div class="mt-3">
+        <a
+          href="{{ url_for('events', variable='all_events') }}"
+          class="card-link"
+          ><div class="card font-small">see all the listings together</div></a
+        >
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

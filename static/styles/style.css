@@ -1,87 +1,86 @@
 body {
-  font-family: Koulen;
+  font-family: "Koulen", sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
 }
 
-.row {
-  margin: auto;
-}
-
-.container {
-  max-width: 800px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 .header {
-  width: 100%;
-  text-align: center !important;
-  margin-bottom: 20px !important;
   background-color: #d68a5f;
   color: #efe9e4;
-  padding: 10px;
-  display: inline-flex;
-  padding: 0px 64px 0px 12px;
+  padding: 10px 0;
+}
+
+.header .container-fluid {
+  display: flex;
   align-items: center;
-  border-radius: 30px;
+  justify-content: flex-start;
+  padding: 0 15px;
 }
+
 .title {
-  text-align: right;
-  font-family: Koulen;
-  font-size: 45px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  font-size: 2rem;
+  margin-left: 15px;
+  margin-bottom: 0;
 }
+
 .footer {
-  width: 100%;
+  background-color: #dc802c;
+  color: black;
+  padding: 10px 0;
   margin-top: auto;
+}
+
+.footer .container-fluid {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .section {
   color: #05096a;
   background-color: #c7c9ff;
-  padding: 40px;
-  border-radius: 60px;
+  padding: 20px;
+  border-radius: 30px;
   margin-bottom: 20px;
-  margin-left: 10px;
 }
+
 .section h2 {
   color: #0072bc;
 }
-.bottom-nav {
-  width: 100%;
-  text-align: center;
-  background-color: #dc802c;
-  color: black;
-  padding: 10px;
-  border-radius: 5px;
-  bottom: 0;
-}
+
+.bottom-links,
 .social-links {
-  margin-right: 2%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
+
+.bottom-links a,
 .social-links a {
-  align-items: right;
   color: black;
   text-decoration: none;
-  margin: 0 10px;
 }
-.bottom-links {
-  margin-left: 2%;
-}
-.bottom-links a {
-  align-items: left;
-  color: black;
-  text-decoration: none;
-  margin: 0 40px;
-}
+
 a {
   text-decoration: none;
   color: inherit;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .footer .container-fluid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bottom-links,
+  .social-links {
+    justify-content: center;
+    margin-bottom: 10px;
+  }
 }

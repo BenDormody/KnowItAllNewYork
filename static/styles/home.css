@@ -6,78 +6,88 @@ a {
 a:focus {
   outline: none;
 }
+
 .font-extra-large {
-  font-size: 64px;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.2;
 }
 
 .font-large {
-  font-size: 3.2vw;
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
 }
 
 .font-medium {
-  font-size: 2vw;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+
+.font-small {
+  font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+}
+
+.card {
+  background-color: #fff;
+  border: 2px solid black;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-link {
+  display: block;
+  height: 100%;
+}
+
+.section {
+  color: #05096a;
+  background-color: #c7c9ff;
+  padding: 30px;
+  border-radius: 30px;
+}
+
+.event-grid {
+  height: calc(
+    100% - 60px
+  ); /* Adjust based on the height of your "see all listings" card */
+}
+
+.event-grid .col {
+  height: 20%; /* This will create 4 rows in the grid */
+}
+
+@media (min-width: 992px) {
+  .card:nth-child(4n + 1) {
+    border-radius: 60px 0 60px 30px;
+  }
+  .card:nth-child(4n + 2) {
+    border-radius: 60px 30px 60px 0;
+  }
+  .card:nth-child(4n + 3) {
+    border-radius: 0px 60px 30px 60px;
+  }
+  .card:nth-child(4n) {
+    border-radius: 30px 60px 0 60px;
+  }
+}
+
+@media (max-width: 991px) {
+  .card {
+    border-radius: 30px !important;
+  }
+  .event-grid .col {
+    height: auto;
+  }
 }
 
 .font-small {
   padding: 10px !important;
   border-radius: 30px !important;
-  font-size: 1.8vw;
-}
-
-.card {
-  background-color: #fff;
-  border: black solid;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  padding: 1vw;
-  text-align: center;
-  justify-content: center;
-  margin-top: 1vw;
-  margin-bottom: 1vw;
-  cursor: pointer;
-}
-
-.card:hover {
-  cursor: pointer;
-}
-
-.card:nth-child(1) {
-  border-radius: 60px 0 60px 30px;
-}
-
-.card:nth-child(2) {
-  border-radius: 60px 30px 60px 0;
-}
-
-.card:nth-child(3) {
-  border-radius: 0px 60px 30px 60px;
-}
-
-.card:nth-child(4) {
-  border-radius: 30px 60px 0 60px;
-}
-
-.card:nth-child(5) {
-  border-radius: 60px 30px 60px 0;
-}
-
-.card:nth-child(6) {
-  border-radius: 60px 0 30px 60px;
-}
-
-.card:nth-child(7) {
-  border-radius: 30px 60px 0 60px;
-}
-
-.card:nth-child(8) {
-  border-radius: 0 60px 30px 60px;
-}
-
-.card:nth-child(9) {
-  border-radius: 30px 30px 30px 30px;
-}
-
-@media screen and (max-width: 600px) {
-  .card {
-    border-radius: 30px !important;
-  }
 }

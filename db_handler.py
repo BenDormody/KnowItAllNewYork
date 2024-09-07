@@ -14,6 +14,7 @@ class DBHandler:
         self.sources = self.db.sources
         self.events = self.db.events
         self.details = self.db.details
+        self.categories = self.db.categories
         self.tz = timezone('EST')
 
     def insert_source(self, source_data):
@@ -35,9 +36,24 @@ class DBHandler:
         return self.details.insert_one(details_data).inserted_id
 
     def get_events_by_tag(self, tag):
-        """Get all events with a specific tag that are not in the past."""
+        """Get all events with a specific tag or its sub_tags that are not in the past."""
         current_date = datetime.now(tz=self.tz)
-        return list(self.events.find({"tag": tag, "date.day": {"$gte": current_date}}).sort("date.day"))
+
+        # Retrieve the category document with the specified tag
+        category = self.categories.find_one({"tag_name": tag})
+
+        if not category:
+            # Return empty list if the category is not found
+            return []
+
+        # Extract sub_tags from the category
+        sub_tags = category.get("sub_tags", [])
+
+        # Find all events that have a tag in the sub_tags list
+        return list(self.events.find({
+            "tags": {"$in": sub_tags},
+            "date.day": {"$gte": current_date}
+        }).sort("date.day"))
 
     def get_all_events(self):
         current_date = datetime.now(tz=self.tz)
@@ -74,6 +90,7 @@ class DBHandler:
             {"date.day": {"$lt": current_date}}))
         for event in past_events:
             self.delete_event(event['_id'])
+        print(f"Deleted {len(past_events)} past events")
 
     def get_all_sources(self):
         return [Source(**source) for source in self.sources.find()]

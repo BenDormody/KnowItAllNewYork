@@ -13,6 +13,7 @@ class BaseScraper(ABC):
         pass
 
     def run(self):
+        self.db_handler.delete_past_events()
         events_and_details = self.scrape_events()
         if events_and_details:
             self.db_handler.update_source(self.source._id, {})

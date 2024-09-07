@@ -41,8 +41,14 @@ class MSGScraper(BaseScraper):
 
         for event_elem in soup.select("[class*='EventCard_card__']"):
             # Extract the name of the event
-            name = event_elem.find(
-                'div', class_='EventCard_title__4Vkof').text.strip()
+            # If the name is not specified we take the performer name instead
+            name_elem = event_elem.find(
+                'div', class_='EventCard_subtitle__YJCXM')
+            if name_elem:
+                name = name_elem.text.strip()
+            else:
+                name = event_elem.find(
+                    'div', class_='EventCard_title__4Vkof').text.strip()
 
             # Extract the date components
             day_of_week = event_elem.find(
@@ -79,7 +85,8 @@ class MSGScraper(BaseScraper):
             if ticket_tag is not None:
                 ticket_link = ticket_tag['href']
             elif event_elem.find('a', class_='Button_onsale__decsL') is not None:
-                ticket_link = event_elem.find('a', class_='Button_onsale__decsL')['href']
+                ticket_link = event_elem.find(
+                    'a', class_='Button_onsale__decsL')['href']
             else:
                 ticket_link = None
             # Extract the link to view event details

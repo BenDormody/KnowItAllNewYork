@@ -44,7 +44,11 @@
             </tr>
             {% endif %}
             <tr>
-              <td>{{event.name}}</td>
+              <td>
+                {{event.name}} {% if event.performer != event.name %}
+                <br />
+                {{event.performer}} {% endif %}
+              </td>
               <td>
                 {{ event.location }}
                 <br />

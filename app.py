@@ -6,7 +6,6 @@ from datetime import datetime
 from pytz import timezone
 from config import Config
 from db_handler import DBHandler
-import scrape
 
 db_handler = DBHandler()
 
@@ -36,12 +35,6 @@ def get_event(event_id):
     if event:
         return jsonify(event)
     return jsonify({'error': 'Event not found'}), 404
-
-
-@app.route('/events/scrape_main')
-def scrap_main():
-    scrape.main()
-    return render_template("home.html")
 
 
 if __name__ == "__main__":

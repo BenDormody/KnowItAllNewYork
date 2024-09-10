@@ -10,7 +10,6 @@ from db_handler import DBHandler
 db_handler = DBHandler()
 
 app = Flask(__name__)
-DEVELOPMENT_ENV = True
 
 tz = timezone('EST')
 
@@ -38,4 +37,8 @@ def get_event(event_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=DEVELOPMENT_ENV)
+    if Config.DEVELOPMENT_ENV:
+        app.run(debug=Config.DEVELOPMENT_ENV)
+    else:
+        port = int(Config.PORT)
+        app.run(host="0.0.0.0", port=port)

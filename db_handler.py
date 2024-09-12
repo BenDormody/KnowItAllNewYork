@@ -55,9 +55,36 @@ class DBHandler:
             "date.day": {"$gte": current_date}
         }).sort("date.day"))
 
+    def get_events_by_tag_dt(self, tag, start_date, end_date):
+        """Get all events with a specific tag or its sub_tags that are not in the past."""
+
+        # Retrieve the category document with the specified tag
+        category = self.categories.find_one({"tag_name": tag})
+
+        if not category:
+            # Return empty list if the category is not found
+            return []
+
+        # Extract sub_tags from the category
+        sub_tags = category.get("sub_tags", [])
+
+        # Find all events that have a tag in the sub_tags list
+        return list(self.events.find({
+            "tags": {"$in": sub_tags},
+            "date.day": {"$gte": start_date, "$lte": end_date}
+        }).sort("date.day"))
+
     def get_all_events(self):
         current_date = datetime.now(tz=self.tz)
         return list(self.events.find({"date.day": {"$gte": current_date}}).sort("date.day"))
+
+    def get_all_events_dt(self, start_date, end_date):
+
+        return list(
+            self.events.find(
+                {"date.day": {"$gte": start_date, "$lte": end_date}}
+            ).sort("date.day")
+        )
 
     def get_event_details(self, event_id):
         """Get details for a specific event."""
@@ -69,6 +96,17 @@ class DBHandler:
     def get_events_by_source(self, source_id):
         """Get all events for a specific source."""
         return list(self.events.find({"source_id": source_id}))
+
+    def get_events_by_source_dt(self, source_id, start_date, end_date):
+        """Get all events for a specific source within a specified date range."""
+        return list(
+            self.events.find(
+                {
+                    "source_id": source_id,
+                    "date.day": {"$gte": start_date, "$lte": end_date}
+                }
+            ).sort("date.day")
+        )
 
     def update_event(self, event_id, updated_data):
         """Update an existing event."""

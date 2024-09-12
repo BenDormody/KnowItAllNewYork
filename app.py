@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import certifi
@@ -21,10 +21,31 @@ def index():
 
 @app.route('/events/<variable>')
 def events(variable):
-    if variable == "all_events":
-        events = db_handler.get_all_events()
+
+    # Get optional query parameters
+    start_date = request.args.get('startdate')
+    end_date = request.args.get('enddate')
+
+    # Validate and parse the dates
+    if start_date and end_date:
+        try:
+            # Try to parse the dates
+            start_date = datetime.strptime(start_date, "%Y-%m-%d")
+            end_date = datetime.strptime(end_date, "%Y-%m-%d")
+        except ValueError:
+            # Handle invalid date format by returning an error or a message
+            return "Invalid date format. Please use YYYY-MM-DD.", 400
+        if variable == "all_events":
+            events = db_handler.get_all_events_dt(start_date, end_date)
+        else:
+            events = db_handler.get_events_by_tag_dt(
+                variable, start_date, end_date)
+
     else:
-        events = db_handler.get_events_by_tag(variable)
+        if variable == "all_events":
+            events = db_handler.get_all_events()
+        else:
+            events = db_handler.get_events_by_tag(variable)
     return render_template("events.html", events=events, event_type=variable)
 
 

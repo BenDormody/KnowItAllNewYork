@@ -65,3 +65,53 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initial call to set correct state on page load
   updateStickyHeader();
 });
+
+// Wait for the DOM to be fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialize Flatpickr
+  const datePicker = flatpickr("#date-picker", {
+    mode: "range",
+    dateFormat: "Y-m-d",
+    onClose: function (selectedDates, dateStr, instance) {
+      if (selectedDates.length > 0) {
+        let url = new URL(window.location.href);
+
+        // Clear existing date parameters
+        url.searchParams.delete("startdate");
+        url.searchParams.delete("enddate");
+
+        // Add start date if it exists
+        if (selectedDates[0]) {
+          url.searchParams.set(
+            "startdate",
+            selectedDates[0].toISOString().split("T")[0]
+          );
+        }
+
+        // Add end date if it exists
+        if (selectedDates[1]) {
+          url.searchParams.set(
+            "enddate",
+            selectedDates[1].toISOString().split("T")[0]
+          );
+        }
+
+        // Redirect to the new URL
+        window.location.href = url.toString();
+      }
+    },
+  });
+
+  // Remove startdate and enddate parameters on page load
+  (function removeDateParameters() {
+    let url = new URL(window.location.href);
+    if (url.searchParams.has("startdate") || url.searchParams.has("enddate")) {
+      // Remove the date parameters
+      url.searchParams.delete("startdate");
+      url.searchParams.delete("enddate");
+
+      // Update the URL without reloading the page
+      window.history.replaceState({}, document.title, url.toString());
+    }
+  })();
+});

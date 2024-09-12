@@ -1,6 +1,11 @@
 {% extends "base.html" %} {% block style %}
 <link rel="stylesheet" type="text/css" href="/static/styles/events.css" />
 <script src="/static/js/events.js" defer></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 {% endblock %} {% block title %}Events{% endblock %} {% block content %}
 <div class="fullscreen-layout">
   <div class="left-side">
@@ -18,7 +23,7 @@
         {% endif %}
       </div>
       <div class="white-space"></div>
-      <div class="date-card">
+      <div class="date-card" id="date-picker">
         <h3>Choose Date</h3>
       </div>
     </div>

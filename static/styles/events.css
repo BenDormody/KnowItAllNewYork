@@ -154,3 +154,10 @@
     font-size: 14px;
   }
 }
+
+.subheading {
+  font-size: 0.875rem; /* Smaller font size for subheading feel */
+  color: #6c757d; /* Gray color for subheading */
+  margin: 0; /* Remove any default margin */
+  display: block; /* Ensure it takes up its own line */
+}

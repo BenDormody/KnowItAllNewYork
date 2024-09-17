@@ -50,7 +50,16 @@
             {% endif %}
             <tr>
               <td>
-                {{event.name}} {% if event.performer != event.name %}
+                {{event.name}} {% if event.note %}
+                <button
+                  class="note"
+                  popovertarget="mypopover"
+                  popovertargetaction="show"
+                >
+                  Editors Note
+                </button>
+                <div id="mypopover" popover>Popover content</div>
+                {% endif %} {% if event.performer != event.name %}
                 <br />
                 <span class="subheading">{{event.performer}}</span> {% endif %}
               </td>
@@ -64,8 +73,10 @@
                   >More Details</a
                 >
               </td>
-              <td>
-                {{ event.date.start_time.strftime('%I:%M %p') }}
+              <td nowrap>
+                {{ event.date.start_time.strftime('%I:%M %p') }} {% if
+                event.date.end_time %} - {{ event.date.end_time.strftime('%I:%M
+                %p')}} {% endif %}
                 <br />
                 <a
                   href="{{event.links.ticket}}"

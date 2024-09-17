@@ -15,6 +15,7 @@ class DBHandler:
         self.events = self.db.events
         self.details = self.db.details
         self.categories = self.db.categories
+        self.series = self.db.series
         self.tz = timezone('EST')
 
     def insert_source(self, source_data):
@@ -53,7 +54,7 @@ class DBHandler:
         return list(self.events.find({
             "tags": {"$in": sub_tags},
             "date.day": {"$gte": current_date}
-        }).sort("date.day"))
+        }).sort([("date.day", 1), ("date.time", 1)]))
 
     def get_events_by_tag_dt(self, tag, start_date, end_date):
         """Get all events with a specific tag or its sub_tags that are not in the past."""
@@ -72,18 +73,18 @@ class DBHandler:
         return list(self.events.find({
             "tags": {"$in": sub_tags},
             "date.day": {"$gte": start_date, "$lte": end_date}
-        }).sort("date.day"))
+        }).sort([("date.day", 1), ("date.time", 1)]))
 
     def get_all_events(self):
         current_date = datetime.now(tz=self.tz)
-        return list(self.events.find({"date.day": {"$gte": current_date}}).sort("date.day"))
+        return list(self.events.find({"date.day": {"$gte": current_date}}).sort([("date.day", 1), ("date.time", 1)]))
 
     def get_all_events_dt(self, start_date, end_date):
 
         return list(
             self.events.find(
                 {"date.day": {"$gte": start_date, "$lte": end_date}}
-            ).sort("date.day")
+            ).sort([("date.day", 1), ("date.time", 1)])
         )
 
     def get_event_details(self, event_id):
@@ -132,6 +133,32 @@ class DBHandler:
 
     def get_all_sources(self):
         return [Source(**source) for source in self.sources.find()]
+
+    def get_all_series(self):
+        current_date = datetime.now(tz=self.tz)
+        return list(self.series.find({"$or": [
+            {"enddate": {"$gte": current_date}},
+            {"enddate": None}
+        ]}).sort("open_time", 1))
+
+    def get_series_by_tag(self, tag):
+        current_date = datetime.now(tz=self.tz)
+        category = self.categories.find_one({"tag_name": tag})
+
+        if not category:
+            # Return empty list if the category is not found
+            return []
+
+        # Extract sub_tags from the category
+        sub_tags = category.get("sub_tags", [])
+
+        return list(self.series.find({
+            "tags": {"$in": sub_tags},
+            "$or": [
+                {"enddate": {"$gte": current_date}},
+                {"enddate": None}
+            ]
+        }).sort("open_time", 1))
 
     def is_event_in_database(self, event):
         """

@@ -80,3 +80,22 @@ class Category:
         if desc_dict['_id'] is None:
             del desc_dict['_id']
         return desc_dict
+
+
+@dataclass
+class EventSeries:
+    name: str
+    location: str
+    start_date: datetime.datetime
+    end_date: datetime.datetime
+    open_time: datetime.time
+    close_time: datetime.time
+    links: Dict[str, str]
+    tags: list
+    _id: Optional[str] = field(default=None)
+
+    def to_dict(self):
+        series_dict = asdict(self)
+        if series_dict['_id'] is None:
+            del series_dict['_id']
+        return series_dict

@@ -54,7 +54,7 @@ class DBHandler:
         return list(self.events.find({
             "tags": {"$in": sub_tags},
             "date.day": {"$gte": current_date}
-        }).sort([("date.day", 1), ("date.time", 1)]))
+        }))
 
     def get_events_by_tag_dt(self, tag, start_date, end_date):
         """Get all events with a specific tag or its sub_tags that are not in the past."""
@@ -73,18 +73,18 @@ class DBHandler:
         return list(self.events.find({
             "tags": {"$in": sub_tags},
             "date.day": {"$gte": start_date, "$lte": end_date}
-        }).sort([("date.day", 1), ("date.time", 1)]))
+        }))
 
     def get_all_events(self):
         current_date = datetime.now(tz=self.tz)
-        return list(self.events.find({"date.day": {"$gte": current_date}}).sort([("date.day", 1), ("date.time", 1)]))
+        return list(self.events.find({"date.day": {"$gte": current_date}}))
 
     def get_all_events_dt(self, start_date, end_date):
 
         return list(
             self.events.find(
                 {"date.day": {"$gte": start_date, "$lte": end_date}}
-            ).sort([("date.day", 1), ("date.time", 1)])
+            )
         )
 
     def get_event_details(self, event_id):
@@ -106,7 +106,7 @@ class DBHandler:
                     "source_id": source_id,
                     "date.day": {"$gte": start_date, "$lte": end_date}
                 }
-            ).sort("date.day")
+            )
         )
 
     def update_event(self, event_id, updated_data):
@@ -139,7 +139,7 @@ class DBHandler:
         return list(self.series.find({"$or": [
             {"enddate": {"$gte": current_date}},
             {"enddate": None}
-        ]}).sort("open_time", 1))
+        ]}))
 
     def get_series_by_tag(self, tag):
         current_date = datetime.now(tz=self.tz)
@@ -158,7 +158,7 @@ class DBHandler:
                 {"enddate": {"$gte": current_date}},
                 {"enddate": None}
             ]
-        }).sort("open_time", 1))
+        }))
 
     def is_event_in_database(self, event):
         """

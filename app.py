@@ -72,6 +72,8 @@ def generate_daily_events(series, start_date=None, end_date=None):
         end_date = min(end_date, series_end_date)
     else:
         end_date = series_end_date
+    current_date = current_date.replace(
+        hour=series['open_time'].hour, minute=series['open_time'].minute)
     while current_date <= end_date:
         event = {
             "name": series['name'],

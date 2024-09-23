@@ -48,7 +48,6 @@ def events(variable):
             events = db_handler.get_all_events()
             series_events = db_handler.get_all_series()
         else:
-            print(variable)
             events = db_handler.get_events_by_tag(variable)
             series_events = db_handler.get_series_by_tag(variable)
     for series in series_events:

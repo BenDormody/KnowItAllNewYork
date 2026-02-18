@@ -65,6 +65,47 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Category dropdown styling */
+.category-card {
+  cursor: pointer;
+  position: absolute; /* Keeps the dropdown relative to the category card */
+  z-index: 1000; /* Ensure the category card stays on top */
+  flex: 1;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute; /* Positioned absolutely to avoid moving other elements */
+  top: 100%; /* Position it directly below the category card */
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999; /* Ensure dropdown is on top of other content, but below category card */
+  margin-top: 10px;
+  padding: 10px 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.dropdown-menu.show {
+  display: contents;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 20px;
+  color: #212529;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
 .white-space {
   flex: 2;
 }
@@ -81,7 +122,7 @@
   color: #ffffff;
   padding: 10px;
   font-weight: bold;
-  z-index: 1000;
+  z-index: 999;
   display: none;
   border-bottom: 1px solid #dee2e6;
   text-align: left;

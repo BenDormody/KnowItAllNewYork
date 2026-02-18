@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block title %}Problem loading events{% endblock %}
+{% block content %}
+<div class="container my-5">
+  <div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">Sorry, something went wrong.</h4>
+    <p>{{ message }}</p>
+    <hr />
+    <p class="mb-0">
+      You can go back to the <a href="{{ url_for('index') }}">home page</a> or
+      try reloading this page in a little while.
+    </p>
+  </div>
+</div>
+{% endblock %}

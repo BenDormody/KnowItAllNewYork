@@ -15,12 +15,59 @@
   </div>
   <div class="right-side">
     <div class="top-bar">
-      <div class="category-card">
+      <div class="category-card" id="category-button">
         {% if event_type == "all_events" %}
         <h3>All Events</h3>
         {% else %}
         <h3>{{event_type}}</h3>
         {% endif %}
+        <div class="dropdown-menu" id="category-dropdown">
+          <a
+            href="{{ url_for('events', variable='all_events') }}"
+            class="dropdown-item"
+            >All Events</a
+          >
+          <a
+            href="{{ url_for('events', variable='stage') }}"
+            class="dropdown-item"
+            >On Stage</a
+          >
+          <a
+            href="{{ url_for('events', variable='sport') }}"
+            class="dropdown-item"
+            >Sports</a
+          >
+          <a
+            href="{{ url_for('events', variable='music') }}"
+            class="dropdown-item"
+            >Music</a
+          >
+          <a
+            href="{{ url_for('events', variable='museums') }}"
+            class="dropdown-item"
+            >Museums</a
+          >
+          <a
+            href="{{ url_for('events', variable='experiences') }}"
+            class="dropdown-item"
+            >Experiences</a
+          >
+          <a
+            href="{{ url_for('events', variable='kids') }}"
+            class="dropdown-item"
+            >Kids</a
+          >
+          <a
+            href="{{ url_for('events', variable='outdoor') }}"
+            class="dropdown-item"
+            >Outdoor & Active Activities</a
+          >
+          <a
+            href="{{ url_for('events', variable='decks') }}"
+            class="dropdown-item"
+            >Observation Decks & Other Icons</a
+          >
+        </div>
       </div>
       <div class="white-space"></div>
       <div class="date-card" id="date-picker">
@@ -74,9 +121,10 @@
                 >
               </td>
               <td nowrap>
-                {{ event.date.start_time.strftime('%I:%M %p') }} {% if
-                event.date.end_time %} - {{ event.date.end_time.strftime('%I:%M
-                %p')}} {% endif %}
+                {% if event.date.start_time %} {{
+                event.date.start_time.strftime('%I:%M %p') }} {% else %}
+                Starttime TBA {% endif %}{% if event.date.end_time %} - {{
+                event.date.end_time.strftime('%I:%M %p')}} {% endif %}
                 <br />
                 <a
                   href="{{event.links.ticket}}"

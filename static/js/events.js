@@ -115,3 +115,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   })();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const categoryButton = document.getElementById("category-button");
+  const categoryDropdown = document.getElementById("category-dropdown");
+  console.log("Category button and dropdown are found.");
+
+  if (categoryButton && categoryDropdown) {
+    console.log("Category button and dropdown are found.");
+    // Toggle dropdown when category button is clicked
+    categoryButton.addEventListener("click", function (e) {
+      e.stopPropagation(); // Prevents closing dropdown on click inside it
+      categoryDropdown.classList.toggle("show"); // Toggles visibility
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (e) {
+      if (
+        !categoryButton.contains(e.target) &&
+        !categoryDropdown.contains(e.target)
+      ) {
+        categoryDropdown.classList.remove("show"); // Closes the dropdown
+      }
+    });
+  }
+});
